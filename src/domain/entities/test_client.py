@@ -1,13 +1,13 @@
 from src.domain.errors.domain_error import DomainError
 from src.domain.entities.client import Client
-from src.domain.interfaces.id_generator import IdGenerator
+from src.domain.interfaces.id_generator_interface import IdGeneratorInterface
 
 NAME = "Fuu Bar"
 EMAIL = "fuu.bar@mail.com"
 EMPTY = ""
 INVALID_EMAIL  = "invalid_email"
 
-class MockIdGenerator(IdGenerator):
+class MockIdGenerator(IdGeneratorInterface):
     def generate(self) -> str:
         return "ABC123"
 
