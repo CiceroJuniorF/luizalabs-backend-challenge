@@ -2,7 +2,6 @@
 from dataclasses import asdict, dataclass
 
 from src.domain.errors.domain_error import DomainError
-from src.domain.interfaces.id_generator import IdGenerator
 
 @dataclass
 class Client:
