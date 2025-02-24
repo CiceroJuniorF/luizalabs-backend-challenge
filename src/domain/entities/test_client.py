@@ -1,18 +1,18 @@
 from src.domain.errors.domain_error import DomainError
 from src.domain.entities.client import Client
-from src.domain.interfaces.id_generator_interface import IdGeneratorInterface
+from src.domain.interfaces.id_generator import IdGenerator
 
 NAME = "Fuu Bar"
 EMAIL = "fuu.bar@mail.com"
 EMPTY = ""
 INVALID_EMAIL  = "invalid_email"
 
-class MockIdGenerator(IdGeneratorInterface):
+class MockIdGenerator(IdGenerator):
     def generate(self) -> str:
         return "ABC123"
 
-id = MockIdGenerator()
-ID = id.generate()
+generator = MockIdGenerator()
+ID = generator.generate()
 
 def test_should_create_client():
     client = Client(id=ID, name=NAME, email=EMAIL)
