@@ -2,13 +2,17 @@
 from dataclasses import asdict, dataclass
 
 from src.domain.errors.domain_error import DomainError
+from src.domain.interfaces.id_generator import IdGenerator
 
 @dataclass
 class Client:
+    
+    id: str
     name: str
     email: str
 
-    def __init__(self, name: str, email: str):
+    def __init__(self, id: str,  name: str, email: str):
+        self.id = id
         self.name = name
         self.email = email
         self.__validate()
@@ -24,6 +28,8 @@ class Client:
     
     def __validate(self) -> bool:
         errors = []
+        if not self.id:
+            errors.append('Id is required')
         if not self.name:
             errors.append('Name is required')
         if not self.email:
