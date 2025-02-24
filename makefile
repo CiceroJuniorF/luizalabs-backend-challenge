@@ -3,9 +3,12 @@ APP_NAME := luizalabs-backend-challenge
 PYTHON := python3
 PIP := pip3
 FASTAPI:= fastapi
+PYTEST := pytest
 
 # Targets
-.PHONY: all install test clean
+.PHONY: all install test test-cov clean
+
+export PYTHONPATH := $(pwd)/src
 
 all: install test
 
@@ -13,7 +16,10 @@ install:
 	$(PIP) install -r requirements.txt
 
 test:
-	$(PYTHON) -m unittest discover -s tests
+	$(PYTEST)
+
+test-cov:
+	$(PYTEST) --cov=src --cov-report=term-missing
 
 start:
 	$(FASTAPI) dev ./src/main.py
