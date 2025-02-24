@@ -19,7 +19,7 @@ test:
 	$(PYTEST)
 
 test-cov:
-	$(PYTEST) --cov=src --cov-report=term-missing
+	$(PYTEST) --cov=src --cov-report=term-missing --cov-branch --cov-fail-under=95
 
 start:
 	$(FASTAPI) dev ./src/main.py
