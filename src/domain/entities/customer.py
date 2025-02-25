@@ -25,6 +25,9 @@ class Customer:
     def to_dict(self) -> dict:
         return asdict(self)
     
+    def is_valid_to_save(self) -> bool:
+        return self.__validate()
+
     def __validate(self) -> bool:
         errors = []
         if not self.id:

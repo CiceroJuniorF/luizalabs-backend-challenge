@@ -40,3 +40,16 @@ def test_shouldnt_create_customer_from_dict_with_all_fields_empty():
 def test_should_return_dict():
     customer = Customer(id=ID, name=NAME, email=EMAIL)
     assert customer.to_dict() == {"id":ID, "name": NAME, "email": EMAIL}
+
+def test_should_valid_customer_to_save():
+    customer = Customer(id=ID, name=NAME, email=EMAIL)
+    assert customer.is_valid_to_save()
+
+def test_shouldnt_valid_customer_to_save():
+    customer = Customer(id=ID, name=NAME, email=EMAIL)
+    assert customer.is_valid_to_save()
+    customer.email = INVALID_EMAIL
+    try: 
+        customer.is_valid_to_save()
+    except DomainError as e:
+        assert str(e) == "Invalid email"
