@@ -4,6 +4,7 @@
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import Optional
 
 @dataclass
 class ProductOutput:
@@ -18,5 +19,5 @@ class ProductOutput:
 
 class ProductService(ABC):
     @abstractmethod
-    def get(self, product_id: int) -> ProductOutput: # pragma: no cover
+    async def get(self, product_id: int) -> Optional[ProductOutput]: # pragma: no cover
         pass

@@ -1,17 +1,18 @@
 from abc import ABC, abstractmethod
+from typing import Optional
 
 from src.domain.entities.customer import Customer
 
 class CustomerRepository(ABC):
     
     @abstractmethod
-    def save(self, Customer:Customer) -> str: # pragma: no cover 
+    async def save(self, customer:Customer) -> str: # pragma: no cover 
         pass
 
     @abstractmethod
-    def find_by_id(self, id: str) -> Customer: # pragma: no cover 
+    async def find_by_id(self, id: str) -> Optional[Customer]: # pragma: no cover 
         pass
 
     @abstractmethod
-    def email_exists(self, email: str) -> bool: # pragma: no cover 
+    async def email_exists(self, email: str) -> bool: # pragma: no cover 
         pass

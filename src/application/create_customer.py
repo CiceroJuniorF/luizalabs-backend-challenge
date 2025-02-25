@@ -19,7 +19,7 @@ class CreateCustomer:
         self.customer_repo = customer_repo
         self.id_gen = id_gen
 
-    def execute(self, input: CreateCustomerInput) -> str:
+    async def execute(self, input: CreateCustomerInput) -> str:
         '''
         Creates a new Customer if not exists
         :param input: CreateCustomerInput

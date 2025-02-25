@@ -29,16 +29,16 @@ class AddProductToFavorites:
         self.favorite_product_repository = favorite_product_repository
         self.id_gen = id_gen
 
-    def execute(self, input: AddProductToFavoritesInput):
-        customer = self.customer_repository.find_by_id(input.customer_id)
+    async def execute(self, input: AddProductToFavoritesInput):
+        customer = await self.customer_repository.find_by_id(input.customer_id)
         if not customer:
             raise ApplicationError(ApplicationErrors.NOT_FOUND, 'Customer not found')
         
-        product = self.product_service.get(input.product_id)
+        product = await self.product_service.get(input.product_id)
         if not product:
             raise ApplicationError(ApplicationErrors.NOT_FOUND, 'Product not found')
         
-        if(self.favorite_product_repository.exists_product_in_customer_favorites(input.customer_id, input.product_id)):
+        if(await self.favorite_product_repository.exists_product_in_customer_favorites(input.customer_id, input.product_id)):
             raise ApplicationError(ApplicationErrors.CONFLICT, "Product already exists in favorites")
             
         favorite_product = FavoriteProduct(

@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 from src.application.add_product_to_favorites import AddProductToFavorites, AddProductToFavoritesInput
 from src.application.errors.application_error import ApplicationError
@@ -18,14 +18,17 @@ FAVORITE_PRODUCT_ID = '246a7903-056a-4a40-b3d1-ad406a891b83'
 
 def __config_default_mocks(mock_customer_repository, mock_favorite_product_repository, mock_id_generator, mock_product_service):
     # Mocking services
+    mock_customer_repository.find_by_id = AsyncMock()
     mock_customer_repository.find_by_id.return_value = Customer.from_dict({
         'id': CUSTOMER_ID,
         'name': 'customer_name',
         'email': 'customer_email@mail.com'
     })
+    mock_favorite_product_repository.exists_product_in_customer_favorites = AsyncMock()
     mock_favorite_product_repository.exists_product_in_customer_favorites.return_value = False
     mock_id_generator.generate.return_value = FAVORITE_PRODUCT_ID
     mock_favorite_product_repository.add.return_value = FAVORITE_PRODUCT_ID
+    mock_product_service.get = AsyncMock()
     mock_product_service.get.return_value = ProductOutput.from_dict({
         'id': PRODUCT_ID,
         'title': 'PRODUCT_1',
@@ -37,7 +40,7 @@ def __config_default_mocks(mock_customer_repository, mock_favorite_product_repos
 @patch('src.domain.interfaces.repositories.favorite_product_repository.FavoriteProductRepository')
 @patch('src.application.add_product_to_favorites.IdGenerator')
 @patch('src.application.add_product_to_favorites.ProductService')
-def test_should_add_product_to_favorites(mock_customer_repository: CustomerRepository, 
+async def test_should_add_product_to_favorites(mock_customer_repository: CustomerRepository, 
                                   mock_favorite_product_repository: FavoriteProductRepository,
                                   mock_id_generator: IdGenerator,
                                   mock_product_service: ProductService
@@ -45,7 +48,7 @@ def test_should_add_product_to_favorites(mock_customer_repository: CustomerRepos
     # Mocking services
     __config_default_mocks(mock_customer_repository, mock_favorite_product_repository, mock_id_generator, mock_product_service)
 
-    favorite_product_id = AddProductToFavorites(mock_customer_repository, mock_favorite_product_repository, mock_id_generator, mock_product_service)\
+    favorite_product_id = await AddProductToFavorites(mock_customer_repository, mock_favorite_product_repository, mock_id_generator, mock_product_service)\
         .execute(AddProductToFavoritesInput.from_dict({
             'customer_id': CUSTOMER_ID,
             'product_id': PRODUCT_ID,
@@ -63,7 +66,7 @@ def test_should_add_product_to_favorites(mock_customer_repository: CustomerRepos
 @patch('src.domain.interfaces.repositories.favorite_product_repository.FavoriteProductRepository')
 @patch('src.application.add_product_to_favorites.IdGenerator')
 @patch('src.application.add_product_to_favorites.ProductService')
-def test_shouldnt_add_product_to_favorites_because_customer_not_exists(mock_customer_repository: CustomerRepository, 
+async def test_shouldnt_add_product_to_favorites_because_customer_not_exists(mock_customer_repository: CustomerRepository, 
                                   mock_favorite_product_repository: FavoriteProductRepository,
                                   mock_id_generator: IdGenerator,
                                   mock_product_service: ProductService
@@ -74,7 +77,7 @@ def test_shouldnt_add_product_to_favorites_because_customer_not_exists(mock_cust
     mock_customer_repository.find_by_id.return_value = None
 
     try: 
-        AddProductToFavorites(mock_customer_repository, mock_favorite_product_repository, mock_id_generator, mock_product_service)\
+        await AddProductToFavorites(mock_customer_repository, mock_favorite_product_repository, mock_id_generator, mock_product_service)\
             .execute(AddProductToFavoritesInput.from_dict({
                 'customer_id': CUSTOMER_ID,
                 'product_id': PRODUCT_ID,
@@ -89,7 +92,7 @@ def test_shouldnt_add_product_to_favorites_because_customer_not_exists(mock_cust
 @patch('src.domain.interfaces.repositories.favorite_product_repository.FavoriteProductRepository')
 @patch('src.application.add_product_to_favorites.IdGenerator')
 @patch('src.application.add_product_to_favorites.ProductService')
-def test_shouldnt_add_product_to_favorites_because_product_not_exists(mock_customer_repository: CustomerRepository, 
+async def test_shouldnt_add_product_to_favorites_because_product_not_exists(mock_customer_repository: CustomerRepository, 
                                   mock_favorite_product_repository: FavoriteProductRepository,
                                   mock_id_generator: IdGenerator,
                                   mock_product_service: ProductService
@@ -100,7 +103,7 @@ def test_shouldnt_add_product_to_favorites_because_product_not_exists(mock_custo
     mock_product_service.get.return_value = None
 
     try: 
-        AddProductToFavorites(mock_customer_repository, mock_favorite_product_repository, mock_id_generator, mock_product_service)\
+        await AddProductToFavorites(mock_customer_repository, mock_favorite_product_repository, mock_id_generator, mock_product_service)\
             .execute(AddProductToFavoritesInput.from_dict({
                 'customer_id': CUSTOMER_ID,
                 'product_id': PRODUCT_ID,
@@ -114,7 +117,7 @@ def test_shouldnt_add_product_to_favorites_because_product_not_exists(mock_custo
 @patch('src.domain.interfaces.repositories.favorite_product_repository.FavoriteProductRepository')
 @patch('src.application.add_product_to_favorites.IdGenerator')
 @patch('src.application.add_product_to_favorites.ProductService')
-def test_shouldnt_add_product_to_favorites_because_product_exists_in_customer_favorites(mock_customer_repository: CustomerRepository, 
+async def test_shouldnt_add_product_to_favorites_because_product_exists_in_customer_favorites(mock_customer_repository: CustomerRepository, 
                                   mock_favorite_product_repository: FavoriteProductRepository,
                                   mock_id_generator: IdGenerator,
                                   mock_product_service: ProductService
@@ -126,7 +129,7 @@ def test_shouldnt_add_product_to_favorites_because_product_exists_in_customer_fa
     mock_favorite_product_repository.exists_product_in_customer_favorites.return_value = True
 
     try: 
-        AddProductToFavorites(mock_customer_repository, mock_favorite_product_repository, mock_id_generator, mock_product_service)\
+        await AddProductToFavorites(mock_customer_repository, mock_favorite_product_repository, mock_id_generator, mock_product_service)\
             .execute(AddProductToFavoritesInput.from_dict({
                 'customer_id': CUSTOMER_ID,
                 'product_id': PRODUCT_ID,

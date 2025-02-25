@@ -25,10 +25,10 @@ def __create_use_case(generator, repository):
 
 @patch('src.domain.interfaces.repositories.customer_repository.CustomerRepository')
 @patch('src.application.add_product_to_favorites.IdGenerator')
-def test_should_create_customer(mock_customer_repository: CustomerRepository, mock_id_generator: IdGenerator):
+async def test_should_create_customer(mock_customer_repository: CustomerRepository, mock_id_generator: IdGenerator):
     __config_default_mocks(mock_customer_repository, mock_id_generator)
     create_customer = __create_use_case(generator= mock_id_generator, repository=mock_customer_repository)
-    id = create_customer.execute(CreateCustomerInput.from_dict({"name":NAME, "email":EMAIL}))
+    id = await create_customer.execute(CreateCustomerInput.from_dict({"name":NAME, "email":EMAIL}))
     mock_customer_repository.save.assert_called_once()
     mock_id_generator.generate.assert_called_once()
     assert id == CUSTOMER_ID
@@ -36,13 +36,13 @@ def test_should_create_customer(mock_customer_repository: CustomerRepository, mo
 
 @patch('src.domain.interfaces.repositories.customer_repository.CustomerRepository')
 @patch('src.application.add_product_to_favorites.IdGenerator')
-def test_shouldnt_create_customer_already_exists(mock_customer_repository: CustomerRepository, mock_id_generator: IdGenerator):
+async def test_shouldnt_create_customer_already_exists(mock_customer_repository: CustomerRepository, mock_id_generator: IdGenerator):
     __config_default_mocks(mock_customer_repository, mock_id_generator)
     # !Override default mock_customer_repository.email_exists to return False
     mock_customer_repository.email_exists.return_value = True
     try:
         create_customer = __create_use_case(generator= mock_id_generator, repository=mock_customer_repository)
-        create_customer.execute(CreateCustomerInput.from_dict({"name":NAME, "email":EMAIL}))
+        await create_customer.execute(CreateCustomerInput.from_dict({"name":NAME, "email":EMAIL}))
     except ApplicationError as e:
         assert e.error == ApplicationErrors.CONFLICT
         assert str(e) == "Customer already exists"
