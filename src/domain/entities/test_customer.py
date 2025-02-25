@@ -7,12 +7,7 @@ EMAIL = "fuu.bar@mail.com"
 EMPTY = ""
 INVALID_EMAIL  = "invalid_email"
 
-class MockIdGenerator(IdGenerator):
-    def generate(self) -> str:
-        return "ABC123"
-
-generator = MockIdGenerator()
-ID = generator.generate()
+ID = "ABC123"
 
 def test_should_create_customer():
     customer = Customer(id=ID, name=NAME, email=EMAIL)
