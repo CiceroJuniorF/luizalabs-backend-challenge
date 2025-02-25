@@ -30,6 +30,18 @@ class AddProductToFavorites:
         self.id_gen = id_gen
 
     async def execute(self, input: AddProductToFavoritesInput):
+        """
+        Adds a product to the customer's list of favorite products.
+        Args:
+            input (AddProductToFavoritesInput): The input to add product to customer favorite list.
+        Raises:
+            ApplicationError: 
+                If the customer is not found.
+                If the product is not found.
+                If the product already exists in the customer's favorites.
+        Returns:
+            The FavoriteProduct ID.
+        """
         customer = await self.customer_repository.find_by_id(input.customer_id)
         if not customer:
             raise ApplicationError(ApplicationErrors.NOT_FOUND, 'Customer not found')
@@ -49,4 +61,4 @@ class AddProductToFavorites:
             image=product.image,
             price=product.price
         )
-        return self.favorite_product_repository.add(favorite_product)
+        return await self.favorite_product_repository.add(favorite_product)

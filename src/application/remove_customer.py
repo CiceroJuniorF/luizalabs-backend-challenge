@@ -24,6 +24,13 @@ class RemoveCustomer:
         self.favorite_product_repository = favorite_product_repository
 
     async def execute(self, remove_customer_input: RemoveCustomerInput):
+        """
+        Executes the removal of a customer and their associated favorite products.
+        Args:
+            remove_customer_input (RemoveCustomerInput): The input to remove a customer.
+        Raises:
+            ApplicationError: If the customer is not found.
+        """
        
         customer = await self.customer_repository.find_by_id(remove_customer_input.customer_id)
         if not customer:

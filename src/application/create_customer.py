@@ -20,11 +20,15 @@ class CreateCustomer:
         self.id_gen = id_gen
 
     async def execute(self, input: CreateCustomerInput) -> str:
-        '''
-        Creates a new Customer if not exists
-        :param input: CreateCustomerInput
-        return ID: str
-        '''
+        """
+        Executes the new customer creation.
+        Args:
+            input (CreateCustomerInput): The input containing customer data.
+        Returns:
+            str: The ID customer.
+        Raises:
+            ApplicationError: If a customer email already exists.
+        """
         if(self.customer_repo.email_exists(input.email)):
             raise ApplicationError(ApplicationErrors.CONFLICT, "Customer already exists")
         customer = Customer(id=self.id_gen.generate(), name=input.name, email=input.email)
