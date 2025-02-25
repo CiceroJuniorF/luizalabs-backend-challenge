@@ -16,3 +16,7 @@ class CustomerRepository(ABC):
     @abstractmethod
     async def email_exists(self, email: str) -> bool: # pragma: no cover 
         pass
+
+    @abstractmethod
+    async def remove(self, id: str) -> bool: # pragma: no cover 
+        pass
