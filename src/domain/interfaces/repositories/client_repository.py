@@ -13,5 +13,5 @@ class ClientRepository(ABC):
         pass
 
     @abstractmethod
-    def exists(self, name: str, email: str) -> bool: # pragma: no cover 
+    def email_exists(self, email: str) -> bool: # pragma: no cover 
         pass

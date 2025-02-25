@@ -18,5 +18,5 @@ class ClientRepositoryMemory(ClientRepository):
 
         raise NotExists('Client', client_id)
 
-    def exists(self, name: str, email: str) -> bool:
-        return any(filter(lambda x: x.name == name and x.email == email, self.clients))
+    def email_exists(self, email: str) -> bool:
+        return any(filter(lambda c: c.email == email, self.clients))

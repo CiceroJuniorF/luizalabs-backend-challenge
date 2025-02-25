@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from src.domain.entities.client import Client
 from src.domain.interfaces.id_generator import IdGenerator
 from src.domain.interfaces.repositories.client_repository import ClientRepository
-from src.use_cases.errors import use_case_error
+from src.use_cases.errors.use_case_error import UseCaseError
 
 @dataclass
 class CreateClientInput:
@@ -21,8 +21,8 @@ class CreateClient:
         :param input: CreateClientInput
         return ID: str
         '''
-        if(self.client_repo.exists(input.name, input.email)):
-            raise use_case_error("Client already exists")
+        if(self.client_repo.email_exists(input.email)):
+            raise UseCaseError("Client already exists")
         ID = self.id_gen.generate()
         client = Client(id=ID, name=input.name, email=input.email)
         self.client_repo.save(client=client)
