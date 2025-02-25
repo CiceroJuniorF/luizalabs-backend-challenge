@@ -4,7 +4,7 @@ from dataclasses import asdict, dataclass
 from src.domain.errors.domain_error import DomainError
 
 @dataclass
-class Client:
+class Customer:
     
     id: str
     name: str
