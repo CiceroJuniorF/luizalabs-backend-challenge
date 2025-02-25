@@ -5,7 +5,7 @@ from src.domain.entities.customer import Customer
 class CustomerRepository(ABC):
     
     @abstractmethod
-    def save(self, Customer:Customer) -> None: # pragma: no cover 
+    def save(self, Customer:Customer) -> str: # pragma: no cover 
         pass
 
     @abstractmethod
