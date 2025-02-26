@@ -57,7 +57,7 @@ async def test_shouldnt_update_customer_because_invalid_email(mock_customer_repo
             }))
     except DomainError as e:
         assert str(e) == "Invalid email"
-        mock_customer_repository.find_by_id.assert_called_zero()
+        mock_customer_repository.find_by_id.assert_called_once()
         mock_customer_repository.find_by_id.assert_called_with(CUSTOMER_ID)
         mock_customer_repository.save.assert_not_called()
 

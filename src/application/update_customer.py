@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 from src.application.errors.application_error import ApplicationError
 from src.application.errors.application_errors_enum import ApplicationErrors
+from src.domain.interfaces.repositories.customer_repository import CustomerRepository
 
 
 @dataclass
@@ -17,7 +18,7 @@ class UpdateCustomerInput:
 
 
 class UpdateCustomer:
-    def __init__(self, customer_repository):
+    def __init__(self, customer_repository:CustomerRepository):
         self.customer_repository = customer_repository
     
     async def execute(self, input: UpdateCustomerInput) -> str:
@@ -35,5 +36,7 @@ class UpdateCustomer:
             raise ApplicationError(ApplicationErrors.NOT_FOUND, 'Customer not found')
         customer.name = input.name
         customer.email = input.email
-        await self.customer_repository.save(customer)
+        if(customer.is_valid_to_save()):
+            await self.customer_repository.save(customer)
+
         return customer.id
