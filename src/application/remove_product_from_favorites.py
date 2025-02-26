@@ -1,11 +1,8 @@
 
 from src.application.errors.application_error import ApplicationError
 from src.application.errors.application_errors_enum import ApplicationErrors
-from src.domain.entities.favorite_product import FavoriteProduct
-from src.domain.interfaces.gateway.product_service import ProductService
-from src.domain.interfaces.id_generator import IdGenerator
-from src.domain.interfaces.repositories.customer_repository import CustomerRepository
-from src.domain.interfaces.repositories.favorite_product_repository import FavoriteProductRepository
+from src.domain.interfaces.repositories.favorite_product_repository import \
+    FavoriteProductRepository
 
 
 class RemoveProductFromFavoritesInput:
