@@ -44,6 +44,7 @@ def __config_default_mocks(mock_customer_repository, mock_favorite_product_repos
     mock_favorite_product_repository.exists_product_in_customer_favorites = AsyncMock()
     mock_favorite_product_repository.exists_product_in_customer_favorites.return_value = False
     mock_id_generator.generate.return_value = FAVORITE_PRODUCT_ID
+    mock_favorite_product_repository.add = AsyncMock()
     mock_favorite_product_repository.add.return_value = FAVORITE_PRODUCT_ID
     mock_product_service.get = AsyncMock()
     mock_product_service.get.return_value = ProductOutput.from_dict(product)
