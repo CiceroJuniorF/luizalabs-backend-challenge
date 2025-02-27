@@ -51,7 +51,6 @@ class OAuth2ClientCredentialsService:
         return AuthenticateOutput.from_dict({"access_token": access_token, "token_type": "bearer", "expires_in": expire.timestamp()})
     
     def authorize(self, access_token:str) -> bool:
-        print(access_token)
         decoded = jwt.decode(access_token, config.SECURITY_OAUTH2_JWT_SECRET, algorithms=[config.SECURITY_OAUTH2_JWT_ALGORITHM])
         if(decoded["sub"] != config.CLIENT_ID):
             raise JWTError("Unauthorized")

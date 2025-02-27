@@ -14,7 +14,6 @@ app.include_router(favorite_product_controller.router, prefix="/api")
 app.include_router(auth_controller.router, prefix="/api")
 
 ### Error Handlers
-
 # Application error handler
 @app.exception_handler(ApplicationError)
 async def application_exception_handler(request: Request, exc: ApplicationError):
@@ -35,7 +34,6 @@ async def domain_exception_handler(request: Request, exc: DomainError):
         status_code = 400,
         content={"message": exc.message}
     )
-
 
 @app.exception_handler(JWTError)
 async def jwt_exception_handler(request: Request, exc: JWTError):
