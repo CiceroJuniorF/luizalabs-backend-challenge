@@ -20,8 +20,8 @@ Irá rodar o docker-compose e logo em seguida irá rodar a api<br>
 1. [Swagger](http://localhost:8000/docs)
 2 . [Redoc](http://localhost:8000/redoc)
 
-# Passo 4: Se autenticando utilizando o fluxo Oauth2 Client Credentials
-### Client Credentials é um fluxo para autenticação entre máquinas
+# Passo 4: Autenticação utilizando o fluxo Oauth2 Client Credentials
+### Client Credentials é um fluxo para autenticação entre serviços, devido a isso foi criado um usuário fixo no momento
 *Usuario fixo:* <br>
 **client_id** <br>
 `luizalabs` <br>
@@ -61,3 +61,7 @@ MONGODB_USERNAME="xx"
 MONGODB_PASSWORD="xx"
 MONGODB_DB="xx"
 ```
+
+# TODO Itens a melhorar: 
+1. Logs
+2. Conexão com a api [api de produtos](https://gist.github.com/Bgouveia/9e043a3eba439489a35e70d1b5ea08ec)
