@@ -26,6 +26,6 @@ class ProductServiceMemory(ProductService):
 
 
 
-    def get(self, product_id: str) -> ProductOutput:
+    async def get(self, product_id: str) -> ProductOutput:
         products = list(filter(lambda product: product.id == product_id, self.products))
         return products[0] if products else None

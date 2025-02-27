@@ -1,6 +1,6 @@
 import uuid
 
 
-class uuid_id_generator:
+class UUIDIdGenerator:
     def generate(self):
         return str(uuid.uuid4())

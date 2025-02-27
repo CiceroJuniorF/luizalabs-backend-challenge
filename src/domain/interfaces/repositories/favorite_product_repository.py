@@ -12,21 +12,13 @@ class FavoriteProductRepository(ABC):
         pass
 
     @abstractmethod
-    async def find_by_id(self, id: str) -> Optional[FavoriteProduct]: # pragma: no cover 
-        pass
-
-    @abstractmethod
     async def exists_product_in_customer_favorites(self, customer_id: str, product_id: str) -> bool: # pragma: no cover
         pass
 
     @abstractmethod
-    async def remove(self, id: str) -> bool: # pragma: no cover 
+    async def remove(self, customer_id:str, product_id: str) -> bool: # pragma: no cover 
         pass
 
     @abstractmethod
     async def remove_by_customer_id(self, customer_id: str) -> bool:# pragma: no cover 
-        pass
-
-    @abstractmethod
-    async def remove_by_customer_id_and_product_id(self, customer_id: str, product_id: str) -> bool:# pragma: no cover 
         pass

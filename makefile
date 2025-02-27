@@ -1,11 +1,9 @@
-# Variables
 APP_NAME := luizalabs-backend-challenge
 PYTHON := python3
 PIP := pip3
 FASTAPI:= fastapi
 PYTEST := pytest
 
-# Targets
 .PHONY: all install test test-cov clean
 
 export PYTHONPATH := $(pwd)/src
@@ -20,6 +18,9 @@ test:
 
 test-cov:
 	$(PYTEST) --cov=src --cov-report=term-missing --cov-branch --cov-fail-under=95
+
+start-in-memory:
+	export USE_IN_MEMORY=1 && $(FASTAPI) dev ./src/main.py
 
 start:
 	$(FASTAPI) dev ./src/main.py

@@ -1,5 +1,5 @@
 
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 from src.application.errors.application_errors_enum import ApplicationErrors
 from src.domain.entities.customer import Customer
 from src.domain.interfaces.id_generator import IdGenerator
@@ -13,12 +13,12 @@ CUSTOMER_ID = "ABC123"
 
 def __config_default_mocks(mock_customer_repository, mock_id_generator):
     # Mocking services
+    mock_customer_repository.save = AsyncMock()
     mock_customer_repository.save.return_value = CUSTOMER_ID
+    mock_customer_repository.email_exists = AsyncMock()
     mock_customer_repository.email_exists.return_value = False
+    mock_id_generator.generate = AsyncMock()
     mock_id_generator.generate.return_value = CUSTOMER_ID
-
-
-
 
 def __create_use_case(generator, repository):
     return CreateCustomer(generator, repository)

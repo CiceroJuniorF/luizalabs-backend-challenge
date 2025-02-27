@@ -29,8 +29,8 @@ class CreateCustomer:
         Raises:
             ApplicationError: If a customer email already exists.
         """
-        if(self.customer_repo.email_exists(input.email)):
+        if(await self.customer_repo.email_exists(input.email)):
             raise ApplicationError(ApplicationErrors.CONFLICT, "Customer already exists")
         customer = Customer(id=self.id_gen.generate(), name=input.name, email=input.email)
-        ID = self.customer_repo.save(customer=customer)
+        ID = await self.customer_repo.save(customer=customer)
         return ID
