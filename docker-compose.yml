@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:7.0.7
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "luizalabs" 
+      MONGO_INITDB_ROOT_PASSWORD: "d8a928b2043db77e340b523547bf16cb4aa483f0645fe0a290ed1f20aab76257"
+    ports:
+      - "27017:27017"
+    volumes:
+      - /.data/mongodb:/data/db
+    networks:
+      - mongo-compose-network
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: "luizalabs"
+      ME_CONFIG_MONGODB_ADMINPASSWORD: "d8a928b2043db77e340b523547bf16cb4aa483f0645fe0a290ed1f20aab76257"
+      ME_CONFIG_MONGODB_SERVER: "mongo"
+      ME_CONFIG_MONGODB_PORT: 27017 
+      ME_CONFIG_BASICAUTH_USERNAME: "user"
+      ME_CONFIG_BASICAUTH_PASSWORD: "pass"
+    ports:
+      - "8081:8081" 
+    networks:
+      - mongo-compose-network
+    depends_on:
+      - mongo
+
+networks:
+  mongo-compose-network:
+    driver: bridge

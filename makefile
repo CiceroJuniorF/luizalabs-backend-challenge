@@ -20,6 +20,7 @@ test-cov:
 	$(PYTEST) --cov=src --cov-report=term-missing --cov-branch --cov-fail-under=95
 
 start:
+	docker-compose up -d --build
 	$(FASTAPI) dev ./src/main.py
 
 clean:

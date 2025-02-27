@@ -9,6 +9,10 @@ class CustomerRepositoryMemory(CustomerRepository):
         self.customers = []
 
     async def save(self, customer: Customer):
+        for i in range(len(self.customers)):
+            if self.customers[i].id == customer.id:
+                self.customers[i] = customer
+                return customer.id
         self.customers.append(customer)
         return customer.id
 
@@ -25,6 +29,5 @@ class CustomerRepositoryMemory(CustomerRepository):
         for customer in self.customers:
             if customer.id == id:
                 self.customers.remove(customer)
-                print(self.customers)
                 return True
         return False

@@ -30,3 +30,15 @@
 }
 ```
 *Devem ser utilizados para adicionar na lista de favoritos do cliente*
+
+
+## Auth Mode Client Credentials
+Usuario fixo:
+client_id: luizalabs
+client_secret: 2d217d9b58e59fb6f3e2ad82e52c3ffe98da318b19594708fd9ed0528f3eb73a
+Autenticação entre sistemas
+
+## Clean Arch
+
+
+*Sobre pass encontrados nas configurações: São apenas referente ao ambiente local* 
