@@ -12,6 +12,9 @@ from src.domain.interfaces.repositories.customer_repository import CustomerRepos
 from src.domain.interfaces.repositories.favorite_product_repository import FavoriteProductRepository
 from src.infrastructure.gateway.product_service_memory import ProductServiceMemory
 from src.infrastructure.mongodb_id_generator import MongoDBIdGenerator
+from src.infrastructure.queries.customer_list_query import CustomerListQuery
+from src.infrastructure.queries.memory.customer_list_memory_query import CustomerListMemoryQuery
+from src.infrastructure.queries.mongodb.customer_list_mongodb_query import CustomerListQueryMongoDB
 from src.infrastructure.repositories.db.mongodb.customer_repository_mongodb import CustomerRepositoryMongoDB
 from src.infrastructure.repositories.db.mongodb.favorite_product_repository_mongodb import FavoriteProductRepositoryMongoDB
 from src.infrastructure.repositories.memory.customer_repository_memory import CustomerRepositoryMemory
@@ -26,6 +29,7 @@ if USE_IN_MEMORY:
     id_gen = UUIDIdGenerator()
     customer_repository: CustomerRepository = CustomerRepositoryMemory()
     favorite_repository: FavoriteProductRepository = FavoriteProductRepositoryMemory()
+    customer_list_query: CustomerListQuery = CustomerListMemoryQuery(customer_repository)
 else:
     id_gen = MongoDBIdGenerator()
     customer_repository: CustomerRepository = CustomerRepositoryMongoDB(
@@ -41,6 +45,16 @@ else:
         mongo_password=MONGODB_PASSWORD,
         mongo_username=MONGODB_USERNAME,
         uri=MONGODB_URL)
+    
+    customer_list_query: CustomerListQuery = CustomerListQueryMongoDB(
+        collection_name="customers", 
+        database_name=MONGODB_DB,
+        mongo_password=MONGODB_PASSWORD,
+        mongo_username=MONGODB_USERNAME,
+        uri=MONGODB_URL)
+    
+    
+
 
 # Está mockado, mas poderia ser um serviço real
 product_service: ProductService = ProductServiceMemory()
@@ -54,6 +68,9 @@ def remove_customer_use_case() -> RemoveCustomer:
 
 def update_customer_use_case() -> UpdateCustomer:
     return UpdateCustomer(customer_repository)
+
+def list_customer_query() -> CustomerListQuery:
+    return customer_list_query
 
 # FAVORITE PRODUCT
 def add_favorite_product_use_case() -> FavoriteProduct:

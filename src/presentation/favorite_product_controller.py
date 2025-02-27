@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from src.application.add_product_to_favorites import AddProductToFavorites, AddProductToFavoritesInput
 from src.application.remove_product_from_favorites import RemoveProductFromFavorites, RemoveProductFromFavoritesInput
 from src.dependencies import add_favorite_product_use_case, authorize, remove_favorite_product_use_case
-from src.presentation.command.favorite_product_messages import AddProductToFavoritesResponse
+from src.presentation.favorite_product_messages import AddProductToFavoritesResponse
 
 
 router = APIRouter(prefix="/customer/{customer_id}/favorite/product", tags=["Customer", "Favorites"])

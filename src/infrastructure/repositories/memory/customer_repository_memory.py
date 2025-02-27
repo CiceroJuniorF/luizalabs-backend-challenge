@@ -1,7 +1,6 @@
 from typing import List, Optional
 from src.domain.entities.customer import Customer
 from src.domain.interfaces.repositories.customer_repository import CustomerRepository
-from src.infrastructure.repositories.errors import NotExists
 
 
 class CustomerRepositoryMemory(CustomerRepository):

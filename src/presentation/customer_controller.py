@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 from src.application.remove_customer import RemoveCustomer, RemoveCustomerInput
 from src.application.update_customer import UpdateCustomer, UpdateCustomerInput
-from src.dependencies import authorize, create_customer_use_case, remove_customer_use_case, update_customer_use_case
+from src.dependencies import authorize, create_customer_use_case, list_customer_query, remove_customer_use_case, update_customer_use_case
 
 from src.application.create_customer import CreateCustomer, CreateCustomerInput
-from src.presentation.command.customer_messages import CreateCustomerRequest, CreateCustomerResponse, UpdateCustomerRequest, UpdateCustomerResponse
+from src.presentation.customer_messages import CreateCustomerRequest, CreateCustomerResponse, CustomerListResponse, UpdateCustomerRequest, UpdateCustomerResponse
 
 router = APIRouter(prefix="/customer", tags=["Customer"])
 
@@ -54,4 +54,16 @@ async def remove_customer(id: str,
                           remove_customer: RemoveCustomer = Depends(remove_customer_use_case)) -> None:
     await remove_customer.execute(RemoveCustomerInput.from_dict({"customer_id":id}))
 
+# LIST CUSTOMERS
+@router.get("/list", 
+                response_model=CustomerListResponse,
+                status_code=200,
+                        summary="List customers with pagination",
+                        responses={
+                                400: {"description": "Invalid query parameters", "content": {"application/json": {"example": {"message": "Invalid query parameters"}}}},
+                        })
+async def list_customers(page: int = 1, size: int = 10, authorize: bool = Depends(authorize), list_customer_query = Depends(list_customer_query)):
+        result = await list_customer_query.list(page, size)
+        return CustomerListResponse.create(result.items, page, size, result.total_pages, result.total)
 
+    

@@ -5,7 +5,7 @@ from jose import JWTError
 from src.application.errors.application_error import ApplicationError
 from src.application.errors.application_errors_enum import ApplicationErrors
 from src.domain.errors.domain_error import DomainError
-from src.presentation.command import auth_controller, customer_controller, favorite_product_controller
+from src.presentation import auth_controller, customer_controller, favorite_product_controller
 
 
 app = FastAPI()

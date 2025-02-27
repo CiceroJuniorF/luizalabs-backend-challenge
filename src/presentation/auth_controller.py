@@ -2,7 +2,7 @@ import base64
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from src.dependencies import oauth2_client_credentials_service
 from src.infrastructure.security.oauth2_client_credentials_service import AuthenticateInput, OAuth2ClientCredentialsService
-from src.presentation.command.auth_message import AuthResponse
+from src.presentation.auth_message import AuthResponse
 
 
 router = APIRouter(prefix="/auth", tags=["Security"])
