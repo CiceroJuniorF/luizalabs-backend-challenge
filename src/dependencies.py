@@ -1,3 +1,5 @@
+from fastapi import Depends
+from fastapi.security import OAuth2, OAuth2PasswordBearer
 from src.application.add_product_to_favorites import AddProductToFavorites
 from src.application.create_customer import CreateCustomer
 from src.application.remove_customer import RemoveCustomer
@@ -11,6 +13,7 @@ from src.domain.interfaces.repositories.favorite_product_repository import Favor
 from src.infrastructure.gateway.product_service_memory import ProductServiceMemory
 from src.infrastructure.repositories.memory.customer_repository_memory import CustomerRepositoryMemory
 from src.infrastructure.repositories.memory.favorite_product_repository_memory import FavoriteProductRepositoryMemory
+from src.infrastructure.security.oauth2_client_credentials_service import OAuth2ClientCredentialsService
 from src.infrastructure.uuid_id_generator import UUIDIdGenerator
 
 
@@ -37,3 +40,25 @@ def add_favorite_product_use_case() -> FavoriteProduct:
 def remove_favorite_product_use_case() -> FavoriteProduct:
     return RemoveProductFromFavorites(customer_repository, favorite_repository)
 
+def oauth2_client_credentials_service() -> OAuth2ClientCredentialsService:
+    return OAuth2ClientCredentialsService()
+
+
+from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel, OAuthFlowClientCredentials
+
+oauth2_scheme = OAuth2(
+    flows=OAuthFlowsModel(
+        clientCredentials=OAuthFlowClientCredentials(
+            tokenUrl="api/auth/token",
+        ),
+        
+        
+    )
+)
+
+def authorize(token: str = Depends(oauth2_scheme)):
+    token = token.replace("Bearer ", "") # Remove Bearer from token
+    return OAuth2ClientCredentialsService().authorize(token)
+
+
+   

@@ -7,7 +7,7 @@ import src.config as config
 from jose import JWTError, jwt
 
 @dataclass
-class AccessTokenInput:
+class AuthenticateInput:
     client_id: str
     client_secret: str
 
@@ -17,7 +17,7 @@ class AccessTokenInput:
         return instance
     
 @dataclass
-class AccessTokenOutput:
+class AuthenticateOutput:
     access_token: str
     token_type: str
     expires_in: int
@@ -41,19 +41,18 @@ class OAuth2ClientCredentialsService:
         return jwt.decode(token, config.SECURITY_OAUTH2_JWT_SECRET, algorithms=[config.SECURITY_OAUTH2_JWT_ALGORITHM])
     
 
-    def create_access_token(self, input: AccessTokenInput) -> AccessTokenOutput:
+    def authenticate(self, input: AuthenticateInput) -> AuthenticateOutput:
         data = {"sub": input.client_id}
+        if(input.client_id != config.CLIENT_ID or input.client_secret != config.CLIENT_SECRET):
+            raise JWTError("Unauthorized")
         expires_delta = timedelta(minutes=config.SECURITY_OAUTH2_ACCESS_TOKEN_EXPIRE_MINUTES)
         expire = datetime.now() + expires_delta
         access_token = self.create_jwt_token(data, expire)
-        return AccessTokenOutput.from_dict({"access_token": access_token, "token_type": "bearer", "expires_in": expire.timestamp()})
+        return AuthenticateOutput.from_dict({"access_token": access_token, "token_type": "bearer", "expires_in": expire.timestamp()})
     
-    def authorize(self, access_token:str):
+    def authorize(self, access_token:str) -> bool:
+        print(access_token)
         decoded = jwt.decode(access_token, config.SECURITY_OAUTH2_JWT_SECRET, algorithms=[config.SECURITY_OAUTH2_JWT_ALGORITHM])
-        if(decoded.get("exp", None) < datetime.now().timestamp()):
-            raise JWTError("Token expired")
-        if(decoded.get("sub", None) is None):
-            raise JWTError("Invalid token")
         if(decoded["sub"] != config.CLIENT_ID):
             raise JWTError("Unauthorized")
         return True

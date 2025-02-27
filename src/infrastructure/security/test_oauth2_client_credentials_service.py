@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
-from src.infrastructure.security.oauth2_client_credentials_service import AccessTokenInput, OAuth2ClientCredentialsService
+from src.infrastructure.security.oauth2_client_credentials_service import AuthenticateInput, OAuth2ClientCredentialsService
 import src.config as config
 
 def test_should_create_jwt_token():
@@ -56,17 +56,36 @@ def test_shouldnt_decode_jwt_token_because_invalid_token():
     except JWTError as e:
         assert "Invalid" in str(e)
 
-def test_should_create_access_token():
+def test_should_authenticate():
     service = OAuth2ClientCredentialsService()
     input_data = {"client_id": config.CLIENT_ID, "client_secret": config.CLIENT_SECRET}
-    access_token_input = AccessTokenInput.from_dict(input_data)
-    access_token_output = service.create_access_token(access_token_input)
+    access_token_input = AuthenticateInput.from_dict(input_data)
+    access_token_output = service.authenticate(access_token_input)
     assert access_token_output.access_token is not None
     assert access_token_output.token_type == "bearer"
     assert access_token_output.expires_in is not None
     decoded_data = jwt.decode(access_token_output.access_token, config.SECURITY_OAUTH2_JWT_SECRET, algorithms=[config.SECURITY_OAUTH2_JWT_ALGORITHM])
     assert decoded_data["sub"] == config.CLIENT_ID
     assert "exp" in decoded_data
+
+def test_shouldnt_authenticate_because_wrong_client_id():
+    service = OAuth2ClientCredentialsService()
+    try:
+        input_data = {"client_id": "any", "client_secret": config.CLIENT_SECRET}
+        access_token_input = AuthenticateInput.from_dict(input_data)
+        service.authenticate(access_token_input)
+    except JWTError as e:
+        assert "Unauthorized" in str(e)
+
+def test_shouldnt_authenticate_because_wrong_client_secret():
+    service = OAuth2ClientCredentialsService()
+    try:
+        input_data = {"client_id": config.CLIENT_ID, "client_secret": "any"}
+        access_token_input = AuthenticateInput.from_dict(input_data)
+        service.authenticate(access_token_input)
+    except JWTError as e:
+        assert "Unauthorized" in str(e)
+
 
 def test_should_authorize():
     service = OAuth2ClientCredentialsService()
