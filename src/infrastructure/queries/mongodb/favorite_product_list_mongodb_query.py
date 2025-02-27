@@ -1,3 +1,4 @@
+from bson import ObjectId
 from src.domain.entities.favorite_product import FavoriteProduct
 from src.infrastructure.queries.favorite_product_list_query import FavoriteProductListQuery, FavoriteProductListQueryOutput
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -9,7 +10,7 @@ class FavoriteProductListQueryMongoDB(FavoriteProductListQuery):
         self.collection = self.database[collection_name]
 
     async def list(self, customer_id: str,  page: int = 1, size: int = 10) -> FavoriteProductListQueryOutput:
-        query = {"customer_id": customer_id}
+        query = {"customer_id": ObjectId(customer_id)}
         total = await self.collection.count_documents(query)
         total_pages = (total + size - 1) // size
         cursor = self.collection.find(query).skip((page - 1) * size).limit(size)

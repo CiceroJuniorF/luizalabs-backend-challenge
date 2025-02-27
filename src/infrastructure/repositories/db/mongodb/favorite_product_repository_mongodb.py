@@ -25,7 +25,7 @@ class FavoriteProductRepositoryMongoDB(FavoriteProductRepository):
         return favorite_product is not None
 
     async def remove(self, customer_id: str, product_id: str) -> bool:
-        result = await self.collection.delete_one({
+        result = await self.collection.delete_many({
             'customer_id': ObjectId(customer_id),
             'product_id': product_id
         })
