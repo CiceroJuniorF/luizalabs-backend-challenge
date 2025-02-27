@@ -1,6 +1,6 @@
 APP_NAME := luizalabs-backend-challenge
-PYTHON := python3
-PIP := pip3
+PYTHON := python
+PIP := pip
 FASTAPI:= fastapi
 PYTEST := pytest
 
