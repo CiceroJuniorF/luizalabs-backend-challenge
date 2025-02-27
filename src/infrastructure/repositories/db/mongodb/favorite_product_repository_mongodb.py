@@ -12,7 +12,9 @@ class FavoriteProductRepositoryMongoDB(FavoriteProductRepository):
         self.collection = self.database[collection_name]
 
     async def add(self, favorite_product: FavoriteProduct) -> str:
-        result = await self.collection.insert_one(favorite_product.to_dict())
+        favorite_product_dict = favorite_product.to_dict()
+        favorite_product_dict['customer_id'] = ObjectId(favorite_product_dict['customer_id'])
+        result = await self.collection.insert_one(favorite_product_dict)
         return str(result.inserted_id)
 
     async def exists_product_in_customer_favorites(self, customer_id: str, product_id: str) -> bool:

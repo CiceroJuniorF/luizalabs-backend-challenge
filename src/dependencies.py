@@ -13,8 +13,11 @@ from src.domain.interfaces.repositories.favorite_product_repository import Favor
 from src.infrastructure.gateway.product_service_memory import ProductServiceMemory
 from src.infrastructure.mongodb_id_generator import MongoDBIdGenerator
 from src.infrastructure.queries.customer_list_query import CustomerListQuery
+from src.infrastructure.queries.favorite_product_list_query import FavoriteProductListQuery
 from src.infrastructure.queries.memory.customer_list_memory_query import CustomerListMemoryQuery
+from src.infrastructure.queries.memory.favorite_product_list_memory_query import FavoriteProductListMemoryQuery
 from src.infrastructure.queries.mongodb.customer_list_mongodb_query import CustomerListQueryMongoDB
+from src.infrastructure.queries.mongodb.favorite_product_list_mongodb_query import FavoriteProductListQueryMongoDB
 from src.infrastructure.repositories.db.mongodb.customer_repository_mongodb import CustomerRepositoryMongoDB
 from src.infrastructure.repositories.db.mongodb.favorite_product_repository_mongodb import FavoriteProductRepositoryMongoDB
 from src.infrastructure.repositories.memory.customer_repository_memory import CustomerRepositoryMemory
@@ -30,6 +33,7 @@ if USE_IN_MEMORY:
     customer_repository: CustomerRepository = CustomerRepositoryMemory()
     favorite_repository: FavoriteProductRepository = FavoriteProductRepositoryMemory()
     customer_list_query: CustomerListQuery = CustomerListMemoryQuery(customer_repository)
+    favorite_product_list_query: FavoriteProductListQuery = FavoriteProductListMemoryQuery(favorite_repository)
 else:
     id_gen = MongoDBIdGenerator()
     customer_repository: CustomerRepository = CustomerRepositoryMongoDB(
@@ -53,6 +57,12 @@ else:
         mongo_username=MONGODB_USERNAME,
         uri=MONGODB_URL)
     
+    favorite_product_list_query: FavoriteProductListQuery = FavoriteProductListQueryMongoDB(
+        collection_name="favorite_products", 
+        database_name=MONGODB_DB,
+        mongo_password=MONGODB_PASSWORD,
+        mongo_username=MONGODB_USERNAME,
+        uri=MONGODB_URL)
     
 
 
@@ -71,6 +81,9 @@ def update_customer_use_case() -> UpdateCustomer:
 
 def list_customer_query() -> CustomerListQuery:
     return customer_list_query
+
+def list_favorite_product_query() -> FavoriteProductListQuery:
+    return favorite_product_list_query
 
 # FAVORITE PRODUCT
 def add_favorite_product_use_case() -> FavoriteProduct:
