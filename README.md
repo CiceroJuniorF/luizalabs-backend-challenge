@@ -1,5 +1,3 @@
-# luizalabs-backend-challenge
-
 # Requisitos
 1. makefile
 2. docker
@@ -64,4 +62,3 @@ MONGODB_DB="xx"
 
 # TODO Itens a melhorar: 
 1. Logs
-2. Conexão com a api [api de produtos](https://gist.github.com/Bgouveia/9e043a3eba439489a35e70d1b5ea08ec)
