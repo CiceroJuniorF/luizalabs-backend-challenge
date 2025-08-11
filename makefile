@@ -1,8 +1,6 @@
-APP_NAME := luizalabs-backend-challenge
-PYTHON := python
-PIP := pip
-FASTAPI:= fastapi
-PYTEST := pytest
+APP_NAME := python-api-showcase
+FASTAPI:= poetry run fastapi
+PYTEST := poetry run pytest
 
 .PHONY: all install test test-cov clean
 
@@ -11,15 +9,15 @@ export PYTHONPATH := $(pwd)/src
 all: install test
 
 install:
-	$(PIP) install -r requirements.txt
+	poetry init
 
 test:
-	$(PYTEST)
+	PYTHONTRACEMALLOC=1 $(PYTEST) -W default -s
 
 test-cov:
 	$(PYTEST) --cov=src --cov-report=term-missing --cov-branch --cov-fail-under=95
 
-start:
+start-local:
 	docker-compose up -d --build
 	$(FASTAPI) dev ./src/main.py
 

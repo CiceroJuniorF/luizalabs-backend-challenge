@@ -1,0 +1,25 @@
+[project]
+name = "python-api-showcase"
+version = "0.1.0"
+description = "My api showcase"
+authors = [
+    {name = "Cicero Junior",email = "cicerojunior.cont@gmail.com"}
+]
+license = {text = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard] (==0.112.0)",
+    "python-jose (==3.4.0)",
+    "pytest-cov (==6.0.0)",
+    "pytest-asyncio (==0.25.3)",
+    "python-dotenv (==1.0.1)",
+    "pymongo (==4.11.1)",
+    "motor (==3.7.0)",
+    "python-multipart (>=0.0.20,<0.0.21)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

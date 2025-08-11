@@ -22,7 +22,7 @@ Irá rodar o docker-compose e logo em seguida irá rodar a api<br>
 ### Client Credentials é um fluxo para autenticação entre serviços, devido a isso foi criado um usuário fixo no momento
 *Usuario fixo:* <br>
 **client_id** <br>
-`luizalabs` <br>
+`ccoder` <br>
 **client_secret** <br>
 `2d217d9b58e59fb6f3e2ad82e52c3ffe98da318b19594708fd9ed0528f3eb73a` <br>
 ![alt](./img/authorize.png)

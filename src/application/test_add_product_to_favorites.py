@@ -25,7 +25,7 @@ customer = {
 product = {
         'id': PRODUCT_ID,
         'title': 'PRODUCT_1',
-        'image': 'https://luizalabs.com/api/images/1',
+        'image': 'https://ccoder.com/api/images/1',
         'price': 100.0
     }
 favorite_product = {

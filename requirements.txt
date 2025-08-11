@@ -1,8 +1,0 @@
-fastapi[standard]==0.112.0
-python-jose==3.4.0
-pytest==8.3.4
-pytest-cov==6.0.0
-pytest-asyncio==0.25.3
-python-dotenv==1.0.1
-pymongo==4.11.1
-motor==3.7.0

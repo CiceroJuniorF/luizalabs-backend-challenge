@@ -1,5 +1,5 @@
 from dataclasses import asdict, dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -46,7 +46,7 @@ class OAuth2ClientCredentialsService:
         if(input.client_id != config.CLIENT_ID or input.client_secret != config.CLIENT_SECRET):
             raise JWTError("Unauthorized")
         expires_delta = timedelta(minutes=config.SECURITY_OAUTH2_ACCESS_TOKEN_EXPIRE_MINUTES)
-        expire = datetime.now() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
         access_token = self.create_jwt_token(data, expire)
         return AuthenticateOutput.from_dict({"access_token": access_token, "token_type": "bearer", "expires_in": expire.timestamp()})
     
